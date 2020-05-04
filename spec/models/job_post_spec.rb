@@ -8,7 +8,9 @@ RSpec.describe JobPost, type: :model do
     describe "title" do
       it "is required" do
         # Given
-        job_post = JobPost.new
+        job_post = FactoryBot.build(:job_post, title: nil)
+        # Your Factories should always create a valid model
+        # FactoryBot.build create a new instance of the model but not save it to the database.
   
         # When
         job_post.valid?
@@ -21,8 +23,8 @@ RSpec.describe JobPost, type: :model do
       end
   
       it "is unique" do
-        persisted_job_post = JobPost.create(title: "full stack dev", description: 'hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world', min_salary: 35_000, location: 'canada')
-        job_post = JobPost.new(title: persisted_job_post.title, description: 'hello world')
+        persisted_job_post = FactoryBot.create(:job_post)
+        job_post = FactoryBot.build(:job_post, title: persisted_job_post.title)
   
         job_post.valid?
         expect(job_post.errors.messages).to(have_key(:title))
@@ -31,7 +33,7 @@ RSpec.describe JobPost, type: :model do
 
     describe "location" do
       it "is required" do
-        job_post = JobPost.new
+        job_post = FactoryBot.build(:job_post, location: nil)
 
         job_post.valid?
 
@@ -41,7 +43,7 @@ RSpec.describe JobPost, type: :model do
 
     describe "description" do
       it "it required" do
-        job_post = JobPost.new
+        job_post = FactoryBot.build(:job_post, description: nil)
   
         job_post.valid?
   
@@ -50,12 +52,13 @@ RSpec.describe JobPost, type: :model do
   
       it "must be larger than 100 characters" do
         # Given
-        job_post = JobPost.new(description: "abcd")
+        job_post = FactoryBot.build(:job_post, description: 'less than 100')
   
         # When
         job_post.valid?
   
         # Then
+        byebug
         expect(job_post.errors.messages).to(have_key(:description))
       end
     end
@@ -63,7 +66,7 @@ RSpec.describe JobPost, type: :model do
     describe "min_salary" do
       it "must be a number greater than 30_000" do
         # When
-        job_post = JobPost.new(min_salary: 25_000)
+        job_post = FactoryBot.build(:job_post, min_salary: 25_000)
   
         job_post.valid?
   
