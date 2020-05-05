@@ -5,7 +5,7 @@ require 'byebug'
 
 RSpec.describe JobPost, type: :model do
   describe "validates" do
-    describe "title" do
+    context "title" do
       it "is required" do
         # Given
         job_post = FactoryBot.build(:job_post, title: nil)
@@ -58,7 +58,7 @@ RSpec.describe JobPost, type: :model do
         job_post.valid?
   
         # Then
-        byebug
+        # byebug
         expect(job_post.errors.messages).to(have_key(:description))
       end
     end
@@ -75,4 +75,41 @@ RSpec.describe JobPost, type: :model do
       end
     end
   end
+
+  # As per Ruby docs, methods that are described with a '.' in front
+  # are class methods, while those described with a '#' in front are 
+  # instance methods
+  describe ".search" do
+    it "should return job posts containing the search term" do 
+      # GIVEN 
+      # 3 job posts in the db
+      job_post_a = JobPost.create(
+        title: "Software Engineer",
+        description: "Best Job ever. We build the best applications ever",
+        min_salary: 50_000,
+        location: "Vancouver"
+      )
+      job_post_b = JobPost.create(
+        title: "Programmer",
+        description: "Best Software position. We build the best applications ever",
+        min_salary: 50_000,
+        location: "Burnaby"
+      )
+      job_post_c = JobPost.create(
+        title: "Programmer",
+        description: "Build awesome stuff. We build the best applications ever",
+        min_salary: 50_000,
+        location: "Vancouver"
+      )
+
+      # WHEN
+      # searching for 'software'
+      results = JobPost.search('software')
+
+      # THEN
+      # JobPost A & B are returned
+      expect(results).to eq([job_post_a, job_post_b])
+    end
+  end
+
 end
