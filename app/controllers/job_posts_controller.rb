@@ -19,6 +19,10 @@ class JobPostsController < ApplicationController
         @job_posts = JobPost.order(created_at: :desc)
     end
 
+    def edit
+        @job_post = JobPost.find params[:id]
+    end
+
     def destroy 
         job_post = JobPost.find params[:id]
         job_post.destroy

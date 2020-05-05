@@ -65,5 +65,5 @@ Rails.application.routes.draw do
   post("/process_contact", to: "welcome#process_contact")
   # delete()
   # patch()
-  resources :job_posts, only: [:new, :create, :show, :destroy, :index]
+  resources :job_posts
 end

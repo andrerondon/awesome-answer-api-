@@ -134,6 +134,21 @@ RSpec.describe JobPostsController, type: :controller do
         expect(assigns(:job_posts)).to eq([job_post_3, job_post_2, job_post_1])
     end
 
-   end 
+   end
+
+   describe "#edit" do 
+    it "renders the edit template" do 
+        job_post = FactoryBot.create(:job_post)
+        get :edit, params: { id: job_post.id }
+        expect(response).to render_template :edit
+    end
+
+    it "sets an instance variable based on the job_post id that is passed" do 
+        job_post = FactoryBot.create(:job_post)
+        get :edit, params: { id: job_post.id }
+        expect(assigns(:job_post)).to eq(job_post)
+    end
+
+   end
 
 end
