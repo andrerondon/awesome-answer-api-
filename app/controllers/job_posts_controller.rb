@@ -15,6 +15,17 @@ class JobPostsController < ApplicationController
         @job_post = JobPost.find(params[:id])
     end
 
+    def index 
+        @job_posts = JobPost.order(created_at: :desc)
+    end
+
+    def destroy 
+        job_post = JobPost.find params[:id]
+        job_post.destroy
+        flash[:danger] = "Job Post deleted!"
+        redirect_to job_posts_path
+    end
+
     private 
     
     def job_post_params

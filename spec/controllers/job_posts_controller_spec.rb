@@ -98,4 +98,42 @@ RSpec.describe JobPostsController, type: :controller do
         expect(assigns(:job_post)).to eq(job_post)
     end
    end
+
+   describe "#destroy" do 
+    
+    before do 
+        @job_post = FactoryBot.create(:job_post)
+        delete(:destroy, params: { id: @job_post.id })
+    end
+
+    it "removes a job post from the db" do 
+        expect(JobPost.find_by(id: @job_post.id)).to be(nil)
+    end
+
+    it "redirects to the job post index" do
+        expect(response).to redirect_to(job_posts_url)
+    end 
+
+    it "sets a flash message" do 
+        expect(flash[:danger]).to be 
+    end
+   end
+
+   describe "#index" do 
+
+    it "renders the index template" do 
+        get :index 
+        expect(response).to render_template(:index)
+    end
+
+    it "assigns an instance variable @job_posts to all created job posts" do 
+        job_post_1 = FactoryBot.create(:job_post)
+        job_post_2 = FactoryBot.create(:job_post)
+        job_post_3 = FactoryBot.create(:job_post)
+        get :index 
+        expect(assigns(:job_posts)).to eq([job_post_3, job_post_2, job_post_1])
+    end
+
+   end 
+
 end
