@@ -84,4 +84,18 @@ RSpec.describe JobPostsController, type: :controller do
         end
     end
    end
+
+   describe "#show" do 
+    it "render show template" do 
+        job_post = FactoryBot.create(:job_post)
+        get(:show, params: {id: job_post.id })
+        expect(response).to render_template(:show)
+    end
+
+    it "sets an instance variable @job_post for the shown object" do 
+        job_post = FactoryBot.create(:job_post)
+        get(:show, params: { id: job_post.id })
+        expect(assigns(:job_post)).to eq(job_post)
+    end
+   end
 end

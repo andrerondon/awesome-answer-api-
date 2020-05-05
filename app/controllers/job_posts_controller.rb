@@ -11,6 +11,10 @@ class JobPostsController < ApplicationController
         end
     end
 
+    def show
+        @job_post = JobPost.find(params[:id])
+    end
+
     private 
     
     def job_post_params
