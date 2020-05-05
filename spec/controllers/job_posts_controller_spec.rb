@@ -151,4 +151,38 @@ RSpec.describe JobPostsController, type: :controller do
 
    end
 
+   describe "#update" do 
+    
+    context "with valid parameters" do 
+        it "updates the job post record with new attribute(s)" do 
+            @job_post = FactoryBot.create(:job_post)
+            new_title = "#{@job_post.title} Plus Changes!"
+            patch :update, params: { id: @job_post.id, job_post: { title: new_title }}
+            expect(@job_post.reload.title).to eq(new_title)
+        end
+
+        it "redirect to the updated Job Post show page" do 
+            @job_post = FactoryBot.create(:job_post)
+            new_title = "#{@job_post.title} Plus Changes!"
+            patch :update, params: { id: @job_post.id, job_post: { title: new_title }}
+            expect(response).to redirect_to(@job_post)
+        end
+    end
+
+    context "with invalid parameters" do 
+        
+        it "doesn't update the job post with new attributes" do 
+            @job_post = FactoryBot.create(:job_post)
+            expect { patch :update, params: { id: @job_post.id, job_post: { title: nil }} }.not_to change { @job_post.reload.title }
+        end
+
+        it "renders the edit template" do 
+            @job_post = FactoryBot.create(:job_post)
+            patch :update, params: { id: @job_post, job_post: { title: nil }}
+            expect(response).to render_template(:edit)
+        end
+    end
+
+   end
+
 end

@@ -23,6 +23,17 @@ class JobPostsController < ApplicationController
         @job_post = JobPost.find params[:id]
     end
 
+    def update
+        @job_post = JobPost.find(params[:id])
+        if @job_post.update job_post_params
+            flash[:notice] = "Job Post Updated!"
+            redirect_to @job_post
+        else
+            flash[:alert] = "Something went wrong, checkout errors"
+            render :edit 
+        end 
+    end 
+
     def destroy 
         job_post = JobPost.find params[:id]
         job_post.destroy
