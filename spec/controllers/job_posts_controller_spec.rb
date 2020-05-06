@@ -271,9 +271,13 @@ RSpec.describe JobPostsController, type: :controller do
    end
 
    describe "#update" do
+
+    before do 
+        session[:user_id] = current_user.id 
+    end
     
     before do 
-        @job_post = FactoryBot.create(:job_post)
+        @job_post = FactoryBot.create(:job_post, user_id: current_user.id)
     end
     
     context "with valid parameters" do
