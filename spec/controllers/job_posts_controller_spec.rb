@@ -215,16 +215,57 @@ RSpec.describe JobPostsController, type: :controller do
    end
 
    describe "#edit" do 
-    it "renders the edit template" do 
-        job_post = FactoryBot.create(:job_post)
-        get :edit, params: { id: job_post.id }
-        expect(response).to render_template :edit
+    context "without signed in user" do
+        before do 
+            @job_post = FactoryBot.create(:job_post, user: current_user)
+            get :edit, params: { id: @job_post.id }
+        end
+        it "redirects the user to session new" do 
+            expect(response).to redirect_to(new_session_path)
+        end
+
+        it "sets a danger flash message" do 
+            expect(flash[:danger]).to be 
+        end
     end
 
-    it "sets an instance variable based on the job_post id that is passed" do 
-        job_post = FactoryBot.create(:job_post)
-        get :edit, params: { id: job_post.id }
-        expect(assigns(:job_post)).to eq(job_post)
+    context "with signed user" do 
+        before do 
+            session[:user_id] = current_user.id 
+        end
+
+        context "as owner" do
+            before do 
+                @job_post = FactoryBot.create(:job_post, user: current_user)
+                get :edit, params: { id: @job_post.id }
+            end
+            it "renders the edit template" do 
+                expect(response).to render_template :edit
+            end
+
+            it "sets an instance variable based on the job_post id that is passed" do 
+                expect(assigns(:job_post)).to eq(@job_post)
+            end
+        end
+
+        context "as non owner" do
+            def another_user
+                @another_user = FactoryBot.create(:user)
+            end
+
+            before do 
+                @job_post = FactoryBot.create(:job_post, user: another_user)
+                get :edit, params: { id: @job_post.id }
+            end
+
+            it "redirects back to home page" do 
+                expect(response).to redirect_to(root_path)
+            end
+
+            it "flashes an alert message" do 
+                expect(flash[:alert]).to be 
+            end
+        end
     end
 
    end
