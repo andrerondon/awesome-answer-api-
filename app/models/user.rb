@@ -10,7 +10,7 @@ class User < ApplicationRecord
   # This method requires:
   # 1) the bcrypt library/gem
   # 2) a column in the table(model) called password_digest
-  has_many :likes
+  has_many :likes, dependent: :destroy
   has_many :liked_questions, through: :likes, source: :question
   # through: :likes <- the join table
   # source: :question <- the associated model relative to this current model (the association foreign key on the likes table)
