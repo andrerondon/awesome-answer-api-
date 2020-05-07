@@ -1,15 +1,11 @@
-Rails: Many To Many 
+Rails: Mailers and Background Jobs
 
-1) Many To Many Introduction
-2) Build Migrations
-3) Update Models
-4) - Routes and Controllers
+1) Intro to Mailers
+  a) setup mailer
+  b) Creating email templates
+  c) preview
 
-
-We're Implementing Likes to our project.
-A user can have many liked_questions
-A question can have many likes
-
-Create a migration for table likes
-  - user_id -> references user.id
-  - question_id -> references question.id
+2) Background Job
+  a) Intro to ActiveJob
+  b) Queue Concept
+  c) Setup SMTP via google servers
