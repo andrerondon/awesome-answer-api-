@@ -34,7 +34,9 @@ Rails.application.configure do
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = true
   # Make sure the above option `raise_delivery_errors` is set to true in development so we can get error notification back if any errors happen
-  config.action_mailer.delivery_method = :smtp #letter_opener is the gem that will open the email in a browser so we can test our mailer
+  # config.action_mailer.delivery_method = :letter_opener #letter_opener is the gem that will open the email in a browser so we can test our mailer
+  # config.action_mailer.delivery_method = :smtp # use smtp for googles email service
+  config.action_mailer.delivery_method = :sendmail # rails built in delivery_method, uses smtp under the hood
   config.action_mailer.perform_deliveries = true
   config.action_mailer.default_url_options = {
     host: "localhost:3000"

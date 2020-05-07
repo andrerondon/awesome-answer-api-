@@ -1,4 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'no-reply@awesome_answers.io'
+  # make sure this email is valid or else emails might not be sent.
+  default from: 'no-reply@awesome-answers.io'
   layout 'mailer'
 end
