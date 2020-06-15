@@ -9,3 +9,10 @@ Rails: Mailers and Background Jobs
   a) Intro to ActiveJob
   b) Queue Concept
   c) Setup SMTP via google servers
+
+____________________
+
+Rails HTTP API:
+
+API: Stands for Application Programming Interface
+

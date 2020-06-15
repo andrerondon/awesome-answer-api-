@@ -4,6 +4,15 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   # if you want to see the routes & helpers you have drawn out visit http://localhost:3000/rails/info/routes
 
+  # draws routes that look like /api/v1
+  namespace :api, defaults: { format: :json } do
+    namespace :v1 do
+      resources :questions, only: [:index, :show, :create]
+
+      resource :session, only: [:create, :destroy]
+    end
+  end
+
   # get("/questions", to: "questions#index")
   # get("/questions/new", to: "questions#new", as: :new_question) #adding a `as: :new_question` option to the route will change the helper path name. This is to adhere to rails convention
   # post("/questions", to: "questions#create")

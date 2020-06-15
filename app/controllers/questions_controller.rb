@@ -17,6 +17,11 @@ class QuestionsController < ApplicationController
       @questions = @tag.questions.all.all_with_answer_counts.order('updated_at DESC')
     else
       @questions = Question.all.all_with_answer_counts.order('updated_at DESC')
+      respond_to do |format|
+        format.html { render }
+        # curl -H "Accept: application/json" http://localhost:3000/questions
+        format.json { render json: @questions }
+      end
     end
   end
 
@@ -45,6 +50,7 @@ class QuestionsController < ApplicationController
     @answers = @question.answers.order(created_at: :desc)
 
     @like = @question.likes.find_by(user: current_user)
+    render json: @question
   end
 
   def destroy
